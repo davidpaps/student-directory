@@ -38,7 +38,7 @@ end
 def print(students)
     counter = 0
     until counter == students.length do
-        puts "#{students[counter][:name]}, #{students[counter][:hobbies]}, #{students[counter][:country]}, #{students[counter][:height]}, #{students[counter][:cohort]} cohort"
+        puts "Name: #{students[counter][:name]}".center(20) + "Hobby: #{students[counter][:hobbies]}".center(20) + "Country: #{students[counter][:country]}".center(20) + "Height: #{students[counter][:height]}".center(20) + "Cohort: #{students[counter][:cohort]} cohort".center(20)
         counter += 1
     end
 end
