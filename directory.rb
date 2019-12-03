@@ -31,20 +31,25 @@ def input_students
 end
 
 def print_header
-  puts "The students of Villains Academy"
-  puts "-------------"
+  puts "The students of Villains Academy".center(50)
+  puts "-------------".center(50)
 end
 
 def print(students)
     counter = 0
     until counter == students.length do
-        puts "Name: #{students[counter][:name]}".center(20) + "Hobby: #{students[counter][:hobbies]}".center(20) + "Country: #{students[counter][:country]}".center(20) + "Height: #{students[counter][:height]}".center(20) + "Cohort: #{students[counter][:cohort]} cohort".center(20)
+        puts %{
+                Name: #{students[counter][:name]}
+                Hobby: #{students[counter][:hobbies]}
+                Country: #{students[counter][:country]}
+                Height: #{students[counter][:height]}
+                Cohort: #{students[counter][:cohort]} cohort}.center(50)
         counter += 1
     end
 end
 
 def print_footer(names)
-  puts "Overall, we have #{names.count} great students"
+  puts "Overall, we have #{names.count} great students".center(50)
 end
 
 students = input_students
