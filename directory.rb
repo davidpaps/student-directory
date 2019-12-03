@@ -1,20 +1,32 @@
-
 def input_students
-  puts "Please ente the name of the students"
-  puts "To finish just hit return twice"
-# Create an empty array:
-  students = []
-# Get the first name:
-  name = gets.chomp
-# While the name is not empty, repeat this code:
-  while !name.empty? do
-# Add the student hash to the array:
-    students << {name: name, cohort: :november}
-    puts "Now we have #{students.count} students"
-# Get another name from the user:
-    name = gets.chomp
-  end
-# Return the array of the students:
+
+    students = []
+
+    while true do
+        puts "Type 'yes' to create a Student Profile? (To finish just hit 'return')"
+        student_profile = gets.chomp
+        if !student_profile.empty?
+            puts "Please enter the information:"
+
+            puts "Please enter your name:"
+            name = gets.chomp
+
+            puts "What are your hobbies:"
+            hobbies = gets.chomp
+
+            puts "where were you born:"
+            country = gets.chomp
+
+            puts "How tall are you?"
+            height = gets.chomp
+
+            students << {name: name, hobbies: hobbies, country: country, height: height, cohort: :november}
+
+            puts "Now we have #{students.count} students"
+        else
+            break
+        end
+    end
   students
 end
 
@@ -26,7 +38,7 @@ end
 def print(students)
     counter = 0
     until counter == students.length do
-        puts "#{students[counter][:name]} #{students[counter][:cohort]} cohort"
+        puts "#{students[counter][:name]}, #{students[counter][:hobbies]}, #{students[counter][:country]}, #{students[counter][:height]}, #{students[counter][:cohort]} cohort"
         counter += 1
     end
 end
@@ -36,7 +48,7 @@ def print_footer(names)
 end
 
 students = input_students
-# Nothing happens here until we call the methods:
+
 print_header
 print(students)
 print_footer(students)
