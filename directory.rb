@@ -1,6 +1,6 @@
-def input_students
+@students = []
 
-    students = []
+def input_students
 
     months = {
         "" => :na,
@@ -37,14 +37,13 @@ def input_students
                 cohort = months[gets.strip.capitalize]
             end
 
-            students << {name: name, cohort: cohort}
+            @students << {name: name, cohort: cohort}
 
-            puts "Now we have #{students.count} students"
+            puts "Now we have #{@students.count} students"
         else
             break
         end
     end
-  students
 end
 
 def print_header
@@ -52,65 +51,73 @@ def print_header
   puts "-------------".center(50)
 end
 
-def print(students)
-    if students.empty?
+def print_student_list
+    if @students.empty?
         puts "There are no students!".center(50)
     else
         counter = 0
-        until counter == students.length do
+        until counter == @students.length do
             puts %{
-                    Name: #{students[counter][:name]}
-                    Cohort: #{students[counter][:cohort]} cohort}.center(50)
+                    Name: #{@students[counter][:name]}
+                    Cohort: #{@students[counter][:cohort]} cohort}.center(50)
             counter += 1
         end
     end
 end
 
 
-def print_by_cohort(students)
+def print_by_cohort
 
     puts "What cohort would you like to print out?".center(50)
     cohort_print = gets.strip.downcase
     if cohort_print.empty?
         puts "There are no students in this cohort!".center(50)
     else
-        students.each do | hash |
+        @students.each do | hash |
         puts hash[:name] if hash[:cohort] == cohort_print.to_sym
         end
     end
 end
 
-def print_footer(names)
-    if names.count <= 1
-        puts "Overall, we have #{names.count} great student".center(50)
+def print_footer
+    if @students.count <= 1
+        puts "Overall, we have #{@students.count} great student".center(50)
     else
-        puts "Overall, we have #{names.count} great students".center(50)
+        puts "Overall, we have #{@students.count} great students".center(50)
     end
 end
 
+
 def interactive_menu
-    students =[]
     loop do
-        # 1. print the menu and ask the user what to do
-        puts "1. Input the students"
-        puts "2. Show the students"
-        puts "9. Exit"
-        # 2. read the input and save it into a variable
-        selection = gets.chomp
-        # 3. do what the user has asked
-        case selection
-        when "1"
-            students = input_students
-        when "2"
-            print_header
-            print(students)
-            print_footer(students)
-            print_by_cohort(students)
-        when "9"
-            exit # Terminated the whole program!
-        else
-            puts "I'm sorry, I dont't know what you mean, try again:".center(50)
-        end
+        print_menu
+        process(gets.chomp)
+    end
+end
+
+def print_menu
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "9. Exit"
+end
+
+def show_students
+    print_header
+    print_student_list
+    print_footer
+    print_by_cohort
+end
+
+def process(selection)
+    case selection
+    when "1"
+        input_students
+    when "2"
+        show_students
+    when "9"
+        exit
+    else
+        puts "I'm sorry, I dont't know what you mean, try again:".center(50)
     end
 end
 
