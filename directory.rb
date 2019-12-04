@@ -1,5 +1,7 @@
 def input_students
 
+    students = []
+
     months = {
         "" => :na,
         "January" => :january,
@@ -15,56 +17,69 @@ def input_students
         "November" => :november,
         "December" => :december
     }
-    puts "Please enter the following information:"
-    puts "To finish just hit return twice!"
 
-    students = []
+    while true do
+        puts "Type 'yes' to create a Student Profile? (To finish just hit 'return')"
+        student_profile = gets.chomp
+        if !student_profile.empty?
+            puts "Please enter the information:"
 
-    puts "Please enter your name:"
-    name = gets.chomp
-    if name.empty?
-        name = "None"
+            puts "Please enter your name:"
+            name = gets.chomp
+            if name.empty?
+                name = "None"
+            end
+
+            puts "Please enter your cohort:"
+            cohort = months[gets.chomp.capitalize]
+            while cohort == nil
+                puts "Try again, please enter your cohort:"
+                cohort = months[gets.chomp.capitalize]
+            end
+
+            students << {name: name, cohort: cohort}
+
+            puts "Now we have #{students.count} students"
+        else
+            break
+        end
     end
-
-    puts "Please enter your cohort:"
-    cohort = months[gets.chomp.capitalize]
-    while cohort == nil
-        puts "Try again, please enter your cohort:"
-        cohort = months[gets.chomp.capitalize]
-    end
-
-
-    while !name.empty? do
-
-      students << {name: name, cohort: cohort}
-      puts "Now we have #{students.count} students"
-
-      name = gets.chomp
-    end
-
-    students
+  students
 end
 
-  def print_header
-    puts "The students of Villains Academy".center(50)
-    puts "-------------".center(50)
-  end
+def print_header
+  puts "The students of Villains Academy".center(50)
+  puts "-------------".center(50)
+end
 
-  def print(students)
-    students.each do |student|
+def print(students)
+    counter = 0
+    until counter == students.length do
         puts %{
-            Name: #{student[:name]}
-            Cohort: #{student[:cohort]}}
-        end
-  end
+                Name: #{students[counter][:name]}
+                Cohort: #{students[counter][:cohort]} cohort}.center(50)
+        counter += 1
+    end
+end
 
-  def print_footer(names)
-    puts "Overall, we have #{names.count} great students".center(50)
-  end
 
-  students = input_students
+def print_by_cohort(students)
 
-  print_header
-  print(students)
-  print_footer(students)
-  
+    puts "What cohort would you like to print out?".center(50)
+    cohort_print = gets.chomp.downcase
+
+    students.each do | hash |
+        puts hash[:name] if hash[:cohort] == cohort_print.to_sym
+    end
+end
+
+def print_footer(names)
+  puts "Overall, we have #{names.count} great students".center(50)
+end
+
+students = input_students
+
+print_header
+print(students)
+print_footer(students)
+print_by_cohort(students)
