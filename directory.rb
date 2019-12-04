@@ -20,21 +20,21 @@ def input_students
 
     while true do
         puts "Type 'yes' to create a Student Profile? (To finish just hit 'return')"
-        student_profile = gets.chomp
+        student_profile = gets.strip
         if !student_profile.empty?
             puts "Please enter the information:"
 
             puts "Please enter your name:"
-            name = gets.chomp
+            name = gets.strip
             if name.empty?
                 name = "None"
             end
 
             puts "Please enter your cohort:"
-            cohort = months[gets.chomp.capitalize]
+            cohort = months[gets.strip.capitalize]
             while cohort == nil
                 puts "Try again, please enter your cohort:"
-                cohort = months[gets.chomp.capitalize]
+                cohort = months[gets.strip.capitalize]
             end
 
             students << {name: name, cohort: cohort}
@@ -66,7 +66,7 @@ end
 def print_by_cohort(students)
 
     puts "What cohort would you like to print out?".center(50)
-    cohort_print = gets.chomp.downcase
+    cohort_print = gets.strip.downcase
 
     students.each do | hash |
         puts hash[:name] if hash[:cohort] == cohort_print.to_sym
