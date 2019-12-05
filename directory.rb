@@ -1,5 +1,9 @@
 @students = []
 
+@filename = "students.csv"
+
+@chosen_file = ""
+
 def input_students
 
     months = {
@@ -113,11 +117,16 @@ def process(selection)
     when "2"
         show_students
     when "3"
+        choose_file
         save_students
+        puts "Student profile(s) saved!"
     when "4"
+        puts "Student profile(s) loaded!"
         @students = []
+        choose_file
         load_students
     when "9"
+        puts "Goodbye!"
         exit
     else
         puts "I'm sorry, I dont't know what you mean, try again:".center(50)
@@ -125,7 +134,7 @@ def process(selection)
 end
 
 def save_students
-    file = File.open("students.csv", "w")
+    file = File.open(@chosen_file, "w")
     @students.each do |student|
         student_data = [student[:name], student [:cohort]]
         csv_line = student_data.join(",")
@@ -134,7 +143,7 @@ def save_students
     file.close
 end
 
-def load_students(filename = "students.csv")
+def load_students(filename = @chosen_file)
     file = File.open(filename, "r")
     file.readlines.each do |line|
         name, cohort = line.chomp.split(",")
@@ -146,7 +155,7 @@ end
 def default_load
   filename = ARGV.first
   if filename.nil?
-    load_students
+    load_students(@filename)
     puts "#{@students.count} students loaded from default'students.csv' file".center(50)
     elsif File.exists?(filename)
       load_students(filename)
@@ -160,6 +169,16 @@ end
 def add_students(name, cohort)
   @students << {name: name, cohort: cohort.to_sym}
 end
+
+def choose_file
+  puts "Which file would you like to use?"
+  @chosen_file = STDIN.gets.chomp
+  if @chosen_file.nil? || !File.exist?(@chosen_file)
+    puts "File does not exist, using #{@filename}"
+    @chosen_file = @filename
+  end
+end
+
 
 default_load
 interactive_menu
