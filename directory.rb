@@ -37,7 +37,7 @@ def input_students
                 cohort = months[STDIN.gets.strip.capitalize]
             end
 
-            @students << {name: name, cohort: cohort}
+            add_students(name, cohort)
 
             puts "Now we have #{@students.count} students"
         else
@@ -141,7 +141,7 @@ def load_students(filename = "students.csv")
     file = File.open(filename, "r")
     file.readlines.each do |line|
         name, cohort = line.chomp.split(",")
-        @students << {name: name, cohort: cohort.to_sym}
+        add_students(name, cohort)
     end
     file.close
 end
@@ -158,9 +158,9 @@ def try_load_students
   end
 end
 
-# def add_students
-#
-# end
+def add_students(name, cohort)
+  @students << {name: name, cohort: cohort.to_sym}
+end
 
 try_load_students
 interactive_menu
