@@ -20,21 +20,21 @@ def input_students
 
     while true do
         puts "Type 'yes' to create a Student Profile? (To finish just hit 'return')"
-        student_profile = gets.strip
+        student_profile = STDIN.gets.strip
         if !student_profile.empty?
             puts "Please enter the information:"
 
             puts "Please enter your name:"
-            name = gets.strip
+            name = STDIN.gets.strip
             if name.empty?
                 name = "None"
             end
 
             puts "Please enter your cohort:"
-            cohort = months[gets.strip.capitalize]
+            cohort = months[STDIN.gets.strip.capitalize]
             while cohort == nil
                 puts "Try again, please enter your cohort:"
-                cohort = months[gets.strip.capitalize]
+                cohort = months[STDIN.gets.strip.capitalize]
             end
 
             @students << {name: name, cohort: cohort}
@@ -69,7 +69,7 @@ end
 def print_by_cohort
 
     puts "What cohort would you like to print out?".center(50)
-    cohort_print = gets.strip.downcase
+    cohort_print = STDIN.gets.strip.downcase
     if cohort_print.empty?
         puts "There are no students in this cohort!".center(50)
     else
@@ -91,7 +91,7 @@ end
 def interactive_menu
     loop do
         print_menu
-        process(gets.chomp)
+        process(STDIN.gets.chomp)
     end
 end
 
@@ -137,8 +137,8 @@ def save_students
     file.close
 end
 
-def load_students
-    file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+    file = File.open(filename, "r")
     file.readlines.each do |line|
         name, cohort = line.chomp.split(",")
         @students << {name: name, cohort: cohort.to_sym}
@@ -146,4 +146,21 @@ def load_students
     file.close
 end
 
+def try_load_students
+  filename = ARGV.first
+  return if filename.nil?
+  if File.exists?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else
+    puts "Sorry, #{filename} doesn't exist."
+    exit
+  end
+end
+
+# def add_students
+#
+# end
+
+try_load_students
 interactive_menu
