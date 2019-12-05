@@ -22,8 +22,6 @@ def input_students
         puts "Type 'yes' to create a Student Profile? (To finish just hit 'return')"
         student_profile = STDIN.gets.strip
         if !student_profile.empty?
-            puts "Please enter the information:"
-
             puts "Please enter your name:"
             name = STDIN.gets.strip
             if name.empty?
@@ -39,7 +37,7 @@ def input_students
 
             add_students(name, cohort)
 
-            puts "Now we have #{@students.count} students"
+            puts "Now we have #{@students.count} students".center(50)
         else
             break
         end
@@ -58,13 +56,12 @@ def print_student_list
         counter = 0
         until counter == @students.length do
             puts %{
-                    Name: #{@students[counter][:name]}
-                    Cohort: #{@students[counter][:cohort]} cohort}.center(50)
+                  Name: #{@students[counter][:name]}
+                  Cohort: #{@students[counter][:cohort]}}.center(50)
             counter += 1
         end
     end
 end
-
 
 def print_by_cohort
 
@@ -86,7 +83,6 @@ def print_footer
         puts "Overall, we have #{@students.count} great students".center(50)
     end
 end
-
 
 def interactive_menu
     loop do
@@ -119,6 +115,7 @@ def process(selection)
     when "3"
         save_students
     when "4"
+        @students = []
         load_students
     when "9"
         exit
@@ -146,15 +143,17 @@ def load_students(filename = "students.csv")
     file.close
 end
 
-def try_load_students
+def default_load
   filename = ARGV.first
-  return if filename.nil?
-  if File.exists?(filename)
-    load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
-  else
-    puts "Sorry, #{filename} doesn't exist."
-    exit
+  if filename.nil?
+    load_students
+    puts "#{@students.count} students loaded from default'students.csv' file".center(50)
+    elsif File.exists?(filename)
+      load_students(filename)
+      puts "Loaded #{@students.count} from #{filename}".center(50)
+    else
+      puts "Sorry, #{filename} doesn't exist.".center(50)
+      exit
   end
 end
 
@@ -162,5 +161,5 @@ def add_students(name, cohort)
   @students << {name: name, cohort: cohort.to_sym}
 end
 
-try_load_students
+default_load
 interactive_menu
