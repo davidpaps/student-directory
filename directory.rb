@@ -121,10 +121,10 @@ def process(selection)
         save_students
         puts "Student profile(s) saved!"
     when "4"
-        puts "Student profile(s) loaded!"
         @students = []
         choose_file
         load_students
+        puts "Student profile(s) loaded!"
     when "9"
         puts "Goodbye!"
         exit
@@ -134,22 +134,22 @@ def process(selection)
 end
 
 def save_students
-    file = File.open(@chosen_file, "w")
+    file = File.open(@chosen_file, "w") do |file|
     @students.each do |student|
         student_data = [student[:name], student [:cohort]]
         csv_line = student_data.join(",")
         file.puts csv_line
+        end
     end
-    file.close
 end
 
 def load_students(filename = @chosen_file)
-    file = File.open(filename, "r")
+    file = File.open(filename, "r") do |file|
     file.readlines.each do |line|
         name, cohort = line.chomp.split(",")
         add_students(name, cohort)
+        end
     end
-    file.close
 end
 
 def default_load
